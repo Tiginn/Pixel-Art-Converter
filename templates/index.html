@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pixel Art Dönüştürücü</title>
+    <style>
+        /* GENEL TASARIM (Dark/Retro Tema) */
+        body { 
+            font-family: 'Courier New', monospace; 
+            background-color: #1a1a1a; 
+            color: #eeeeee; 
+            text-align: center; 
+            padding: 40px; 
+            margin: 0;
+        }
+        h1 { 
+            color: #ff0055; 
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 0px #fff;
+            margin-bottom: 5px;
+        }
+        p.subtitle { color: #888; font-size: 14px; margin-bottom: 30px; }
+
+        /* YÜKLEME KUTUSU */
+        .upload-section {
+            background: #2d2d2d;
+            padding: 25px;
+            border-radius: 10px;
+            display: inline-block;
+            border: 2px dashed #444;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        
+        /* FORM ELEMANLARI */
+        input[type="file"] { margin-bottom: 15px; color: #fff; }
+        
+        select {
+            padding: 8px;
+            border-radius: 5px;
+            background-color: #444;
+            color: white;
+            border: 1px solid #666;
+            font-family: inherit;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        .btn { 
+            padding: 10px 25px; 
+            border: none; 
+            border-radius: 5px;
+            cursor: pointer; 
+            font-size: 16px; 
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary { background: #00aaff; color: white; margin-top: 15px; }
+        .btn-primary:hover { background: #0088cc; transform: scale(1.05); }
+
+        .btn-download {
+            background-color: #28a745;
+            color: white;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 15px;
+        }
+        .btn-download:hover { background-color: #218838; transform: translateY(-2px); }
+
+        /* RESİM ALANI */
+        .container { 
+            display: flex; 
+            justify-content: center; 
+            flex-wrap: wrap; 
+            gap: 30px; 
+            margin-top: 40px; 
+        }
+
+        .box { 
+            background: #2d2d2d; 
+            padding: 15px; 
+            border-radius: 10px; 
+            border: 2px solid #444; 
+        }
+
+        h3 { color: #aaa; margin-top: 0; }
+
+        /* PİKSELLEŞME EFEKTİ İÇİN KRİTİK KOD */
+        img { 
+            max-width: 400px; 
+            height: auto; 
+            display: block; 
+            border-radius: 4px;
+            image-rendering: pixelated; /* Pikselleri bulanıklaştırma, keskin tut */
+        }
+    </style>
+</head>
+<body>
+
+    <h1>👾 Retro Pixel Art Dönüştürücü</h1>
+    <p class="subtitle">Görüntü İşleme Projesi | K-Means & Dithering</p>
+
+    <div class="upload-section">
+        <form method="post" enctype="multipart/form-data">
+            <input type="file" name="file" accept="image/*" required>
+            <br>
+            
+            <label for="colors" style="color:#aaa;">Renk Paleti:</label>
+            <select name="color_count" id="colors">
+                <option value="4">4 Renk (Gameboy)</option>
+                <option value="8">8 Renk (Atari)</option>
+                <option value="16" selected>16 Renk (Retro)</option>
+                <option value="32">32 Renk (Detaylı)</option>
+                <option value="64">64 Renk (Yüksek)</option>
+            </select>
+
+            <button type="submit" class="btn btn-primary">🚀 Dönüştür</button>
+        </form>
+    </div>
+
+    {% if orijinal %}
+    <div class="container">
+        <div class="box">
+            <h3>Orijinal</h3>
+            <img src="{{ url_for('static', filename='uploads/' + orijinal) }}" alt="Orijinal">
+        </div>
+        <div class="box">
+            <h3>Pixel Art Sonuç</h3>
+            <img src="{{ url_for('static', filename='uploads/' + sonuc) }}" alt="Sonuç">
+            <br>
+            <a href="{{ url_for('download_file', filename=sonuc) }}" class="btn btn-download">
+                💾 İndir
+            </a>
+        </div>
+    </div>
+    {% endif %}
+
+    <div style="margin-top: 50px; font-size: 12px; color: #555;">
+        Python Flask & OpenCV Projesi
+    </div>
+
+</body>
+</html>
